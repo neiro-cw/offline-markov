@@ -1,0 +1,7 @@
+*.txt
+txt/
+*.json
+__pycache__/
+train.py
+.directory
+config.py
