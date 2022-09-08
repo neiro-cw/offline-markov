@@ -38,11 +38,12 @@ def markov_say(words):
     if not words:
         return None
 
-    for n in range(3):
+    l = len(words)
+    for n in range(min(3, l)):
         try:
             sentence = sentence_with_start(markov3, " ".join(words[n:]))
         except Exception:
-            if n == 2:
+            if n == min(3, l) - 1:
                 raise
             else:
                 continue
@@ -100,7 +101,7 @@ async def on_message(message):
 
     react_if_fail = True
     if content.lower().startswith("markov say"):
-        sentence_start = content.split()[-3:]
+        sentence_start = content.split()[2:][-3:]
         try:
             response = markov_say(sentence_start)
         except Exception:
