@@ -6,15 +6,7 @@ from datetime import datetime
 s = "%Y-%m-%dT%H:%M:%S"
 start_date = datetime.strptime("0001-01-01T01:01:01", s)
 
-def addfile(filename):
-    with open(filename, "r") as f:
-        js = json.load(f)
-    with open(f"txt/{filename}.txt", "w") as f:
-        for m in js["messages"]:
-            if len(m['content']) > 0:
-                f.write(m["content"].replace("\n", " ") + '\n')
-
-with open("lines.txt", "w") as f:
+with open("history.txt", "w") as f:
     for fn in [fn for fn in os.listdir() if fn.endswith(".json")]:
         with open(fn, "r") as j:
             js = json.load(j)
@@ -25,6 +17,10 @@ with open("lines.txt", "w") as f:
         for m in js["messages"]:
             time_cur = datetime.strptime(m["timestamp"].split('.')[0].split("+")[0], s)
             if author == m["author"]["id"] and (time_cur - time_prev).total_seconds() < 60:
+                if not m['content']:
+                    continue
+                if not m['content'].startswith("I "):
+                    m['content'] = m['content'][0].lower() + m['content'][1:]
                 msg += " " + m['content'].replace("\n", " ").replace("  ", " ").replace("||", "").replace("*", "")
             else:
                 if msg:
