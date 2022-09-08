@@ -99,6 +99,9 @@ async def on_message(message):
     with open("new_messages.txt", "a") as f:
         f.write(content + "\n")
 
+    if message.guild.id == 794516395895291914 and message.channel.id != 1017147127559897089:
+        return
+
     react_if_fail = True
     if content.lower().startswith("markov say"):
         sentence_start = content.split()[2:][-3:]
