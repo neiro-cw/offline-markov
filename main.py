@@ -101,7 +101,12 @@ async def on_message(message):
     react_if_fail = True
     if content.lower().startswith("markov say"):
         sentence_start = content.split()[-3:]
-        response = markov_say(sentence_start)
+        try:
+            response = markov_say(sentence_start)
+        except Exception:
+            print(f"Failed to find an answer to \"{content}\"")
+            await message.add_reaction("❓")
+            return
         response = " ".join(content.split()[2:-3]) + " " + response
     elif "markov" in content.lower(): # or client.user.mentioned_in(message):
         response = markov_random()
