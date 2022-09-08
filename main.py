@@ -8,14 +8,13 @@ import re
 from config import TOKEN
 
 def load_markov():
-    global markov2, markov3
+    global markov3
     with open("history.txt", "r") as f:
         text = f.read()
     with open("new_messages.txt", "r") as f:
         text += f.read()
 
     markov3 = markovify.NewlineText(text, state_size = 3)
-    markov2 = markovify.NewlineText(text, state_size = 2)
 
 def load_emotes(guilds):
     global emotes
@@ -43,17 +42,12 @@ def markov_say(words):
         sentence = sentence_with_start(markov3, " ".join(words[:n]))
         if sentence:
             return sentence
-        sentence = sentence_with_start(markov2, " ".join(words[:n]))
-        if sentence:
-            return sentence
 
     return None
 
 def markov_random():
     sentence = markov3.make_sentence(tries=10)
-    if sentence:
-        return sentence
-    return markov2.make_sentence(tries=10)
+    return sentence
 
 def format_emotes(message, guild_id):
     if guild_id not in emotes:
