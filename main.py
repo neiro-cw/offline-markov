@@ -5,7 +5,6 @@ import discord
 import markovify
 from random import randrange
 import re
-from collections import defaultdict
 from config import TOKEN
 
 def load_markov():
