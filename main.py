@@ -38,10 +38,16 @@ def markov_say(words):
     if not words:
         return None
 
-    for n in range(3, 1, -1):
-        sentence = sentence_with_start(markov3, " ".join(words[:n]))
+    for n in range(3):
+        try:
+            sentence = sentence_with_start(markov3, " ".join(words[n:]))
+        except Exception:
+            if n == 2:
+                raise
+            else:
+                continue
         if sentence:
-            return sentence
+            return " ".join(words[:n]) + (" " if n != 0 else "") + sentence
 
     return None
 
@@ -94,13 +100,9 @@ async def on_message(message):
 
     react_if_fail = True
     if content.lower().startswith("markov say"):
-        sentence_start = content.split()[2:]
-        try:
-            response = markov_say(sentence_start)
-        except Exception:
-            print(f"Failed to find an answer to \"{content}\"")
-            await message.add_reaction("❓")
-            return
+        sentence_start = content.split()[-3:]
+        response = markov_say(sentence_start)
+        response = " ".join(content.split()[2:-3]) + " " + response
     elif "markov" in content.lower(): # or client.user.mentioned_in(message):
         response = markov_random()
     elif randrange(0, 100) == 0:
@@ -111,7 +113,7 @@ async def on_message(message):
         return
 
     if response:
-        response = format_emotes(response, message.guild.id)
+        response = format_emotes(response.strip(), message.guild.id)
         await message.channel.send(response)
     elif react_if_fail:
         await message.add_reaction("❌")
