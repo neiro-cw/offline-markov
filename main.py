@@ -26,7 +26,7 @@ def load_emotes(guilds):
 def format_message(text):
     return rem.sub(r":\1:", text.replace("\n", " ").replace("  ", " ").replace("||", ""))
 
-def sentence_with_start(model, start, tries = 10):
+def sentence_with_start(model, start, tries = 25):
     for i in range(tries):
         sentence = model.make_sentence_with_start(start, strict=False)
         if sentence:
@@ -46,7 +46,7 @@ def markov_say(words):
     return None
 
 def markov_random():
-    sentence = markov3.make_sentence(tries=10)
+    sentence = markov3.make_sentence(tries=25)
     return sentence
 
 def format_emotes(message, guild_id):
