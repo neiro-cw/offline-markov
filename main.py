@@ -14,7 +14,7 @@ def load_markov():
     with open("new_messages.txt", "r") as f:
         text += f.read()
 
-    markov3 = markovify.NewlineText(text, state_size = 3)
+    markov3 = markovify.NewlineText(text, state_size = 2)
 
 def load_emotes(guilds):
     global emotes
@@ -39,11 +39,11 @@ def markov_say(words):
         return None
 
     l = len(words)
-    for n in range(min(3, l)):
+    for n in range(min(2, l)):
         try:
             sentence = sentence_with_start(markov3, " ".join(words[n:]))
         except Exception:
-            if n == min(3, l) - 1:
+            if n == min(2, l) - 1:
                 raise
             else:
                 continue
@@ -104,14 +104,14 @@ async def on_message(message):
 
     react_if_fail = True
     if content.lower().startswith("markov say"):
-        sentence_start = content.split()[2:][-3:]
+        sentence_start = content.split()[2:][-2:]
         try:
             response = markov_say(sentence_start)
         except Exception:
             print(f"Failed to find an answer to \"{content}\"")
             await message.add_reaction("❓")
             return
-        response = " ".join(content.split()[2:-3]) + " " + response
+        response = " ".join(content.split()[2:-2]) + " " + response
     elif "markov" in content.lower(): # or client.user.mentioned_in(message):
         response = markov_random()
     elif randrange(0, 100) == 0:
