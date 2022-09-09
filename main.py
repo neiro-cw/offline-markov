@@ -63,7 +63,7 @@ def format_emotes(message, guild_id):
     for name, emote in emotes[guild_id].items():
         message = message.replace(name, str(emote))
 
-    return message
+    return rep.sub(r"\1 ", message + " ").strip()
 
 async def greetings(guilds, message):
     for guild in guilds:
@@ -74,6 +74,7 @@ async def greetings(guilds, message):
 
 
 rem = re.compile(r"<:([\w\d]+)(~\d+)?:\d+>")
+rep = re.compile(r" (,|\.|!|\?) ")
 load_markov()
 client = discord.Client(intents=discord.Intents.all())
 main_channels = {
