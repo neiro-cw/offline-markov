@@ -9,9 +9,11 @@ from config import TOKEN
 
 def load_markov():
     global markov3
-    with open("history.txt", "r") as f:
+    with open("fixed_history.txt", "r") as f:
         text = f.read()
-    with open("new_messages.txt", "r") as f:
+    with open("fixed_new_messages.txt", "r") as f:
+        text += f.read()
+    with open("fixed_baj.txt", "r") as f:
         text += f.read()
 
     markov3 = markovify.NewlineText(text, state_size = 2)
@@ -24,7 +26,8 @@ def load_emotes(guilds):
 
 
 def format_message(text):
-    return rem.sub(r":\1:", text.replace("\n", " ").replace("  ", " ").replace("||", ""))
+    tmp = rem.sub(r":\1:", text.replace("\n", " ").replace("  ", " ").replace("||", ""))
+    return rec.sub(r"\1 \2", tmp)
 
 def sentence_with_start(model, start, tries = 25):
     for i in range(tries):
@@ -75,6 +78,7 @@ async def greetings(guilds, message):
 
 rem = re.compile(r"<:([\w\d]+)(~\d+)?:\d+>")
 rep = re.compile(r" (,|\.|!|\?) ")
+rec = re.compile(r"([^\s])(,|\.|!|\?)")
 load_markov()
 client = discord.Client(intents=discord.Intents.all())
 main_channels = {

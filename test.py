@@ -22,7 +22,8 @@ def load_emotes(guilds):
 
 
 def format_message(text):
-    return rem.sub(r":\1:", text.replace("\n", " ").replace("  ", " ").replace("||", ""))
+    tmp = rem.sub(r":\1:", text.replace("\n", " ").replace("  ", " ").replace("||", ""))
+    return rec.sub(r"\1 \2", tmp)
 
 def sentence_with_start(model, start, tries = 25):
     for i in range(tries):
@@ -67,6 +68,7 @@ async def greetings(guilds, message):
 
 rem = re.compile(r"<:([\w\d]+)(~\d+)?:\d+>")
 rep = re.compile(r" (,|\.|!|\?) ")
+rec = re.compile(r"([^\s])(,|\?|!|\.)")
 load_markov()
 client = discord.Client(intents=discord.Intents.all())
 main_channels = {
@@ -84,6 +86,7 @@ async def on_ready():
 
 def on_message(message):
     content = format_message(message)
+    print(content)
 
     react_if_fail = True
     if content.lower().startswith("markov say"):
@@ -109,5 +112,6 @@ def on_message(message):
         pass
 
 
-for i in range(100):
-    on_message('markov ass')
+on_message("markov say sissy")
+on_message("markov say sissy,")
+on_message("markov say sissy ,")
