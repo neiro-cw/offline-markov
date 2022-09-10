@@ -30,27 +30,37 @@ def format_message(text):
     tmp = rem.sub(r":\1:", text.replace("\n", " ").replace("  ", " ").replace("||", ""))
     return rec.sub(r"\1\2", tmp)
 
-def sentence_with_start(model, start, tries = 25):
+def sentence_with_start(model, start, tries = 25, strict):
     for i in range(tries):
-        sentence = model.make_sentence_with_start(start, strict=False)
+        sentence = model.make_sentence_with_start(start, strict=strict)
         if sentence:
             return sentence
 
     return None
 
-def markov_say(words):
-    if not words:
+def markov_say(say, strict):
+    if not say:
         return None
+
+    if len(say) <= 2:
+        strict = True
+    else:
+        strict = False
+
+    words = say[-2:]
 
     l = len(words)
     for n in range(min(2, l)):
         try:
-            sentence = sentence_with_start(markov3, " ".join(words[n:]))
+            sentence = sentence_with_start(markov3, " ".join(words[n:]), strict)
         except Exception:
             if n == min(2, l) - 1:
                 raise
             else:
+                strict = False
                 continue
+
+        strict = False
         if sentence:
             return " ".join(words[:n]) + (" " if n != 0 else "") + sentence
 
@@ -110,7 +120,7 @@ async def on_message(message):
 
     react_if_fail = True
     if content.lower().startswith("markov say"):
-        sentence_start = content.split()[2:][-2:]
+        sentence_start = content.split()[2:]
         try:
             response = markov_say(sentence_start)
         except Exception:
