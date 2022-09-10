@@ -90,7 +90,7 @@ async def greetings(guilds, message):
 
 rem = re.compile(r"<:([\w\d]+)(~\d+)?:\d+>")
 rep = re.compile(r" (,|\.|!|\?) ")
-rec = re.compile(r" (,|\.|!|\?)(\s|\.|!|\?)")
+rec = re.compile(r" (,+|\.+|!+|\?+)(\s|$)")
 load_markov()
 client = discord.Client(intents=discord.Intents.all())
 main_channels = {
