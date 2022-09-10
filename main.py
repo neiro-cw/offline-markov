@@ -43,7 +43,7 @@ def markov_say(say):
         return None
 
     if len(say) <= 2:
-        strict = True
+        strict = False
     else:
         strict = False
 
