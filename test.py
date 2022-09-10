@@ -60,6 +60,7 @@ def markov_say(say):
             if n == min(2, l) - 1:
                 raise
             else:
+                raise
                 strict = False
                 continue
 
@@ -112,7 +113,7 @@ def on_message(message):
             response = markov_say(sentence_start)
         except Exception:
             print(f"Failed to find an answer to \"{content}\"")
-            return
+            raise
         response = " ".join(content.split()[2:-2]) + " " + response
     elif "markov" in content.lower(): # or client.user.mentioned_in(message):
         response = markov_random()
@@ -128,4 +129,4 @@ def on_message(message):
     elif react_if_fail:
         pass
 
-on_message("markov say I am")
+on_message("markov say zekoipd is")

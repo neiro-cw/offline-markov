@@ -53,7 +53,7 @@ def markov_say(say):
     for n in range(min(2, l)):
         try:
             sentence = sentence_with_start(markov3, " ".join(words[n:]), strict)
-        except Exception:
+        except KeyError:
             if n == min(2, l) - 1:
                 raise
             else:
@@ -123,7 +123,7 @@ async def on_message(message):
         sentence_start = content.split()[2:]
         try:
             response = markov_say(sentence_start)
-        except Exception:
+        except KeyError:
             print(f"Failed to find an answer to \"{content}\"")
             await message.add_reaction("❓")
             return
