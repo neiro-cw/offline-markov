@@ -11,6 +11,7 @@ def load_markov():
     global markov3
     with open("fixed_history.txt", "r") as f:
         text = f.read()
+        text += f.read()
     with open("fixed_new_messages.txt", "r") as f:
         text += f.read()
     with open("fixed_baj.txt", "r") as f:
