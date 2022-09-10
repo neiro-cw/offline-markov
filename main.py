@@ -62,6 +62,7 @@ def markov_say(say):
 
         strict = False
         if sentence:
+            print(f'markov say returned with n={n} (prompt "{say}")')
             return " ".join(words[:n]) + (" " if n != 0 else "") + sentence
 
     return None
