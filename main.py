@@ -38,7 +38,7 @@ def sentence_with_start(model, start, strict, tries = 25):
 
     return None
 
-def markov_say(say, strict):
+def markov_say(say):
     if not say:
         return None
 
