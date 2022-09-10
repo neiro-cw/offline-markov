@@ -30,7 +30,7 @@ def format_message(text):
     tmp = rem.sub(r":\1:", text.replace("\n", " ").replace("  ", " ").replace("||", ""))
     return rec.sub(r"\1\2", tmp)
 
-def sentence_with_start(model, start, tries = 25, strict):
+def sentence_with_start(model, start, strict, tries = 25):
     for i in range(tries):
         sentence = model.make_sentence_with_start(start, strict=strict)
         if sentence:
