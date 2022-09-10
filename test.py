@@ -56,11 +56,10 @@ def markov_say(say):
         print(n, strict)
         try:
             sentence = sentence_with_start(markov3, " ".join(words[n:]), strict)
-        except Exception:
+        except (KeyError, markovify.text.ParamError):
             if n == min(2, l) - 1:
                 raise
             else:
-                raise
                 strict = False
                 continue
 
@@ -111,9 +110,9 @@ def on_message(message):
         sentence_start = content.split()[2:]
         try:
             response = markov_say(sentence_start)
-        except Exception:
+        except (KeyError, markovify.text.ParamError):
             print(f"Failed to find an answer to \"{content}\"")
-            raise
+            return
         response = " ".join(content.split()[2:-2]) + " " + response
     elif "markov" in content.lower(): # or client.user.mentioned_in(message):
         response = markov_random()
@@ -129,4 +128,4 @@ def on_message(message):
     elif react_if_fail:
         pass
 
-on_message("markov say zekoipd is")
+on_message("markov say markov online")
